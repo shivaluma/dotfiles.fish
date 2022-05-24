@@ -38,37 +38,49 @@ packer.init({
 	},
 })
 
--- Install your plugins here
 return packer.startup(function(use)
-	-- My plugins here
 	use("wbthomason/packer.nvim") -- Have packer manage itself
 	use("lewis6991/impatient.nvim")
 
 	-- ui
 	use({
-		"dracula/vim",
-		as = "dracula",
+		"catppuccin/nvim",
+		as = "catppuccin",
 	})
+	use("stevearc/dressing.nvim")
+	use("j-hui/fidget.nvim")
 	use("nvim-lualine/lualine.nvim")
 	use("kyazdani42/nvim-web-devicons")
 	use("kyazdani42/nvim-tree.lua")
 	use("akinsho/bufferline.nvim")
 	use("akinsho/toggleterm.nvim")
 	use("karb94/neoscroll.nvim")
-	use("andweeb/presence.nvim")
 
 	-- basic functionality
-	use("terryma/vim-multiple-cursors")
 	use("windwp/nvim-autopairs")
 	use("editorconfig/editorconfig-vim")
 	use("numToStr/Comment.nvim")
 	use("folke/which-key.nvim")
 	use("famiu/bufdelete.nvim")
-	use("ThePrimeagen/harpoon")
+	use("folke/todo-comments.nvim")
+	use("Pocco81/AutoSave.nvim")
+	use("ojroques/vim-oscyank")
+	use("ellisonleao/glow.nvim")
+	use("tpope/vim-abolish")
+	use("triglav/vim-visual-increment")
+	use("tpope/vim-speeddating")
+	use("tpope/vim-eunuch")
+	use("tpope/vim-surround")
+	use("tpope/vim-unimpaired")
+	use({
+		"rrethy/vim-hexokinase",
+		run = "make hexokinase",
+	})
 
 	-- telescope
 	use("nvim-lua/plenary.nvim")
 	use("nvim-telescope/telescope.nvim")
+	use("nvim-telescope/telescope-github.nvim")
 	use({
 		"nvim-telescope/telescope-fzf-native.nvim",
 		run = "make",
@@ -76,12 +88,16 @@ return packer.startup(function(use)
 
 	-- all things lsp, syntax highlight, snippets, etc
 	use("neovim/nvim-lspconfig")
+	use("nvim-lua/lsp-status.nvim")
 	use("williamboman/nvim-lsp-installer")
+	use("hrsh7th/nvim-cmp")
 	use("hrsh7th/cmp-nvim-lsp")
 	use("hrsh7th/cmp-buffer")
 	use("hrsh7th/cmp-path")
 	use("hrsh7th/cmp-cmdline")
-	use("hrsh7th/nvim-cmp")
+	use("hrsh7th/cmp-emoji")
+	use("f3fora/cmp-spell")
+	use("hrsh7th/cmp-calc")
 	use("L3MON4D3/LuaSnip")
 	use("saadparwaiz1/cmp_luasnip")
 	use("rafamadriz/friendly-snippets")
@@ -92,14 +108,19 @@ return packer.startup(function(use)
 		run = ":TSUpdate",
 	})
 	use("onsails/lspkind-nvim")
-	use("jose-elias-alvarez/null-ls.nvim")
 	use("simrat39/symbols-outline.nvim")
 	use("ray-x/lsp_signature.nvim")
+	use("RRethy/vim-illuminate")
+
+	-- debugging
+	use("mfussenegger/nvim-dap")
+	use("leoluz/nvim-dap-go")
+	use("rcarriga/nvim-dap-ui")
+	use("theHamsta/nvim-dap-virtual-text")
+	use("nvim-telescope/telescope-dap.nvim")
 
 	-- git
-	use("TimUntersberger/neogit")
-	use("lewis6991/gitsigns.nvim")
-	use("ThePrimeagen/git-worktree.nvim")
+	use("mhinz/vim-signify")
 
 	-- testing et al
 	use("vim-test/vim-test")

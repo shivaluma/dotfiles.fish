@@ -1,26 +1,17 @@
+local ok, catppuccin = pcall(require, "catppuccin")
+if not ok then
+	return
+end
+
+catppuccin.setup({
+	integrations = {
+		which_key = true,
+		neogit = true,
+	},
+})
+
 vim.cmd([[
 set background=dark
 set termguicolors
-try
-  packadd! dracula_pro
-  let g:dracula_colorterm = 0
-  colorscheme dracula_pro
-
-  " fixes lsp referecens on dracula-pro
-  hi! link LspReferenceText DraculaSelection
-  hi! link LspReferenceRead DraculaSelection
-  hi! link LspReferenceWrite DraculaSelection
-catch
-  try
-    colorscheme dracula
-  catch
-    colorscheme default
-  endtry
-endtry
-
-try
-  " highlights current line number
-  highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
-  set cursorline
-endtry
+colorscheme catppuccin
 ]])
