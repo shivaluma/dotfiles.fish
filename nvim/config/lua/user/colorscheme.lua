@@ -1,17 +1,9 @@
-local ok, catppuccin = pcall(require, "catppuccin")
-if not ok then
-	return
-end
-
-catppuccin.setup({
-	integrations = {
-		which_key = true,
-		neogit = true,
-	},
-})
+-- vim.g.gruvbox_contrast_dark = "hard"
+vim.g.gruvbox_sign_column = "dark0"
 
 vim.cmd([[
 set background=dark
 set termguicolors
-colorscheme catppuccin
+colorscheme gruvbox
 ]])
+
