@@ -1,9 +1,8 @@
--- vim.g.gruvbox_contrast_dark = "hard"
-vim.g.gruvbox_sign_column = "dark0"
+vim.g.gruvbox_material_background = "hard"
+vim.g.gruvbox_material_better_performance = 1
 
 vim.cmd([[
 set background=dark
 set termguicolors
-colorscheme gruvbox
+colorscheme gruvbox-material
 ]])
-

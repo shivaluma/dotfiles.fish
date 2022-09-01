@@ -92,9 +92,11 @@ function install_dotfiles
 			or abort 'failed to link config file'
 	end
 
-	link_file $DOTFILES_ROOT/fisher/plugins $__fish_config_dir/fish_plugins backup
+	link_file $DOTFILES_ROOT/fish/plugins $__fish_config_dir/fish_plugins backup
 		or abort plugins
-	link_file $DOTFILES_ROOT/bat/config $HOME/.config/bat/config backup
+	link_file $DOTFILES_ROOT/fish/gruvbox.theme $__fish_config_dir/themes/gruvbox.theme backup
+		or abort gruvbox.theme
+	link_file $DOTFILES_ROOT/system/bat.config $HOME/.config/bat/config backup
 		or abort bat
 	link_file $DOTFILES_ROOT/htop/htoprc $HOME/.config/htop/htoprc backup
 		or abort htoprc
@@ -103,6 +105,8 @@ function install_dotfiles
 	link_file $DOTFILES_ROOT/ssh/rc $HOME/.ssh/rc backup
 		or abort ssh-rc
 	link_file $DOTFILES_ROOT/kitty/kitty.conf $HOME/.config/kitty/kitty.conf backup
+		or abort kitty
+	link_file $DOTFILES_ROOT/kitty/macos-launch-services-cmdline $HOME/.config/kitty/macos-launch-services-cmdline backup
 		or abort kitty
 	link_file $DOTFILES_ROOT/nvim/config $HOME/.config/nvim backup
 		or abort nvim
@@ -126,7 +130,11 @@ fisher update
 	and success 'plugins'
 	or abort 'plugins'
 
-mkdir -p ~/.config/fish/completions/
+yes | fish_config theme save gruvbox
+	and success 'colorscheme'
+	or abort 'colorscheme'
+
+mkdir -p $__fish_config_dir/completions/
 	and success 'completions'
 	or abort 'completions'
 

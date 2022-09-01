@@ -1,15 +1,13 @@
-local ok, telescope = pcall(require, "telescope")
-if not ok then
-	return
-end
-
 local actions = require("telescope.actions")
+local telescope = require("telescope")
 
 telescope.setup({
 	defaults = {
 		mappings = {
 			i = {
-				["<esc>"] = actions.close
+				["<esc>"] = actions.close,
+				["<Tab>"] = actions.move_selection_previous,
+				["<S-Tab>"] = actions.move_selection_next,
 			},
 		},
 		vimgrep_arguments = {
@@ -23,15 +21,13 @@ telescope.setup({
 			"--hidden",
 			"--glob=!.git",
 		},
+		prompt_prefix = "   ",
+		color_devicons = true,
 	},
 })
 
-telescope.load_extension("fzf")
-telescope.load_extension("gh")
-
 local r = require("user.remap").nnoremap
-r("<leader>ff", ":Telescope find_files<CR>")
-r("<C-p>", ":Telescope git_files<CR>")
+r("<C-p>", ":Telescope find_files find_command=rg,--hidden,--files,--smart-case,--glob=!.git<CR>")
 r("<leader>of", ":Telescope oldfiles<CR>")
 r("<leader>lg", ":Telescope live_grep<CR>")
 r("<leader>fb", ":Telescope buffers<CR>")
@@ -40,5 +36,4 @@ r("<leader>ft", ":Telescope treesitter<CR>")
 r("<leader>fc", ":Telescope commands<CR>")
 r("<leader>fr", ":Telescope resume<CR>")
 r("<leader>fq", ":Telescope quickfix<CR>")
-r("<leader>fgi", ":Telescope gh issues<CR>")
-r("<leader>fgp", ":Telescope gh pull_requests<CR>")
+r("<leader>/", ":Telescope current_buffer_fuzzy_find<CR>")

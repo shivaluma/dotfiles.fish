@@ -1,7 +1,6 @@
 local options = {
 	compatible = false,
-	-- clipboard = "unnamedplus",
-	-- cmdheight = 2,
+	clipboard = "unnamedplus",
 	hidden = true,
 	updatetime = 300, -- faster update times
 	mouse = "a",
@@ -23,26 +22,23 @@ local options = {
 	swapfile = false,
 	backup = false,
 	undofile = true,
-	undodir = os.getenv("HOME") .. "/.config/nvim/undodir",
+	undodir = os.getenv("HOME") .. "/.local/share/nvim/undodir",
 	hlsearch = false,
 	ignorecase = true,
 	incsearch = true,
 	ruler = true,
 	wildmenu = true,
 	autoread = true,
-	-- syntax = true,
 	completeopt = { "menu", "menuone", "noselect", "noinsert" },
 	colorcolumn = "80",
-	foldmethod = "indent",
-	foldnestmax = 3,
-	foldminlines = 10,
-	foldlevelstart = 999,
 	backspace = { "indent", "eol", "start" },
 	spell = true,
 	spelllang = { "en_us" },
 	laststatus = 3,
-	list = true,
+	cursorline = true,
+	list = false,
 	listchars = "eol:↲,tab:» ,trail:·,extends:<,precedes:>,conceal:┊,nbsp:␣",
+	grepprg = "rg --vimgrep --smart-case --follow",
 }
 
 vim.opt.shortmess:append("c")
@@ -50,9 +46,3 @@ vim.opt.shortmess:append("c")
 for k, v in pairs(options) do
 	vim.opt[k] = v
 end
-
-vim.cmd([[
-	set whichwrap+=<,>,[,],h,l
-	set iskeyword+=-
-	set formatoptions-=cro
-]])
