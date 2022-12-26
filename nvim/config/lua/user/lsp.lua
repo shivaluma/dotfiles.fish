@@ -28,15 +28,16 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 	vim.keymap.set("n", "<leader>D", builtin.lsp_type_definitions, opts)
+	vim.keymap.set("n", "<leader>cl", vim.lsp.codelens.run, opts)
 	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
 	vim.keymap.set("n", "<leader>gl", vim.diagnostic.open_float, opts)
-	vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<CR>", opts)
+	vim.keymap.set("n", "<leader>lr", vim.cmd.LspRestart, opts)
 	vim.keymap.set("n", "[d", function()
-		vim.diagnostic.goto_next({ float = false })
+		vim.diagnostic.goto_prev({ float = false })
 	end, opts)
 	vim.keymap.set("n", "]d", function()
-		vim.diagnostic.goto_prev({ float = false })
+		vim.diagnostic.goto_next({ float = false })
 	end, opts)
 
 	if client.server_capabilities.documentFormattingProvider and client.name ~= "sumneko_lua" then
@@ -67,15 +68,20 @@ local on_attach = function(client, bufnr)
 	end
 
 	if client.server_capabilities.codeLensProvider then
-		vim.lsp.codelens.refresh()
-		vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", "InsertLeave" }, {
+		vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
 			buffer = bufnr,
 			callback = function()
 				vim.lsp.codelens.refresh()
 			end,
 			group = group,
 		})
-		vim.keymap.set("n", "<leader>cl", vim.lsp.codelens.run, opts)
+		vim.api.nvim_create_autocmd("LspDetach", {
+			buffer = bufnr,
+			callback = function()
+				vim.api.nvim_buf_clear_namespace(bufnr, -1, 0, -1)
+			end,
+			group = group,
+		})
 	end
 
 	if client.server_capabilities.documentHighlightProvider then
@@ -119,9 +125,6 @@ lspconfig.gopls.setup({
 	},
 })
 
-local schemas = {}
-schemas["https://goreleaser.com/static/schema-pro.json"] = ".goreleaser.yaml"
-
 lspconfig.yamlls.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
@@ -131,7 +134,6 @@ lspconfig.yamlls.setup({
 				url = "https://www.schemastore.org/api/json/catalog.json",
 				enable = true,
 			},
-			schemas = schemas,
 		},
 	},
 })
@@ -171,14 +173,27 @@ lspconfig.dockerls.setup({
 	on_attach = on_attach,
 })
 
+-- Make runtime files discoverable to the server
+local runtime_path = vim.split(package.path, ";")
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
 lspconfig.sumneko_lua.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 	settings = {
 		Lua = {
-			diagnostics = {
-				globals = { "vim", "require", "pcall", "pairs" },
+			runtime = {
+				-- Tell the language server which version of Lua you're using (most likely LuaJIT)
+				version = "LuaJIT",
+				-- Setup your lua path
+				path = runtime_path,
 			},
+			diagnostics = {
+				globals = { "vim" },
+			},
+			workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+			-- Do not send telemetry data containing a randomized but unique identifier
+			telemetry = { enable = false },
 			hint = {
 				enable = true,
 			},

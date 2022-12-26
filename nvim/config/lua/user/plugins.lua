@@ -36,7 +36,6 @@ packer.startup(function(use)
 
 	use({
 		"rcarriga/nvim-notify",
-		after = "catppuccin",
 		config = function()
 			vim.notify = require("notify")
 			vim.notify.setup({
@@ -100,11 +99,9 @@ packer.startup(function(use)
 			"nvim-web-devicons",
 			"catppuccin",
 		},
-		requires = {
-			"mhinz/vim-sayonara",
-		},
 		config = function()
 			require("bufferline").setup({
+				---@diagnostic disable-next-line: assign-type-mismatch
 				highlights = require("catppuccin.groups.integrations.bufferline").get(),
 				options = {
 					diagnostics = "nvim_lsp",
@@ -136,13 +133,14 @@ packer.startup(function(use)
 
 	use({
 		"nvim-telescope/telescope.nvim",
-		config = function()
-			require("user.telescope")
-		end,
+		after = { "harpoon" },
 		requires = {
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope-github.nvim",
 		},
+		config = function()
+			require("user.telescope")
+		end,
 	})
 
 	-- the whole lsp, luasnip and cmp gang
@@ -222,26 +220,6 @@ packer.startup(function(use)
 	})
 
 	use({
-		"TimUntersberger/neogit",
-		requires = {
-			"sindrets/diffview.nvim",
-			"nvim-lua/plenary.nvim",
-		},
-		config = function()
-			require("neogit").setup({
-				disable_commit_confirmation = true,
-				disable_context_highlighting = true,
-				disable_signs = true,
-				disable_hint = true,
-				integrations = {
-					diffview = true,
-				},
-			})
-			vim.keymap.set("n", "<leader>gs", require("neogit").open, { noremap = true, silent = true })
-		end,
-	})
-
-	use({
 		"vim-test/vim-test",
 		config = function()
 			require("user.test")
@@ -270,11 +248,16 @@ packer.startup(function(use)
 		end,
 	})
 
+	use("mhinz/vim-sayonara")
+	use("ThePrimeagen/harpoon")
 	use("editorconfig/editorconfig-vim")
+	use("folke/zen-mode.nvim")
+	use("tpope/vim-fugitive")
 	use("tpope/vim-repeat")
 	use("tpope/vim-abolish")
 	use("tpope/vim-eunuch")
-	-- use("dstein64/vim-startuptime")
+	use("tpope/vim-sleuth")
+	use("mbbill/undotree")
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
